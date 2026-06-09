@@ -1,6 +1,5 @@
-#Aquí vamos a importar Flask, igual se instala desde pip y la terminal. 
 from flask import Flask
-#Desde nuestro otro archivo, Database, vamos a importar el nombre de nuestra base de datos. 
+
 from database import db
 
 app = Flask(__name__)
@@ -13,7 +12,6 @@ from routes.inventario import inventario_bp
 from routes.tratamientos import tratamientos_bp
 from routes.citas import citas_bp
 
-#Y vamos a registrarlas dentro del app que nos crea Flask. 
 app.register_blueprint(index_bp)
 app.register_blueprint(pacientes_bp, url_prefix='/pacientes')
 app.register_blueprint(empleados_bp, url_prefix='/empleados')
