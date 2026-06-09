@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Alta de Pacientes</title>
+</head>
+<body>
+<header>
+    <h1>Alta de Pacientes - Consultorio SMILE</h1>
+    <img src="{{ url_for('static', filename='img.png') }}" width="250" alt="Logotipo SMILE">
+    <p> Rellene los datos solicitados para darle de alta en el sistema o use el buscador para localizar un registro. </p>
+</header>
+<main>
+    <div class="search-container">
+        <form action="/pacientes/buscar" method="GET" class="search-form">
+            <input type="text" name="criterio" placeholder="Buscar por RFC o Nombre del paciente..." required>
+            <button type="submit" class="btn-search">🔍 Buscar Paciente</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <h2>{% if paciente %}Modificar Datos del Paciente{% else %}Ingreso de Pacientes{% endif %}</h2>
+        
+        {% if error_busqueda %}
+            <p style="color: #d9534f; background-color: #fdd; padding: 10px; border-radius: 6px; font-weight: bold; text-align: center; margin-bottom: 20px;">
+                {{ error_busqueda }}
+            </p>
+        {% endif %}
+        
+        <form action="{% if paciente %}/pacientes/actualizar{% else %}/pacientes/guardar{% endif %}" method="POST">
+            
+            {% if paciente %}
+            <input type="hidden" name="id_paciente" value="{{ paciente.id_paciente }}">
+            {% endif %}
+
+            <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" name="Nombre" value="{{ paciente.Nombre if paciente else '' }}" placeholder="Ej: Alan" required>
+            </div>
+
+            <div class="form-group">
+                <label>Apellidos:</label>
+                <input type="text" name="Apellidos" value="{{ paciente.Apellidos if paciente else '' }}" placeholder="Ej: Perez Lopez" required>
+            </div>
+
+            <div class="form-group">
+                <label>Fecha de nacimiento:</label>
+                <input type="date" name="Fecha_de_nacimiento" value="{{ paciente.Fecha_de_nacimiento if paciente else '' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Sexo:</label>
+                <input type="text" name="Sexo" value="{{ paciente.Sexo if paciente else '' }}" placeholder="Ej: M" required>
+            </div>
+
+            <div class="form-group">
+                <label>Edad:</label>
+                <input type="number" name="Edad" value="{{ paciente.Edad if paciente else '' }}" placeholder="Ej: 21" required>
+            </div>
+
+            <div class="form-group">
+                <label>Aseguranza:</label>
+                <input type="text" name="Aseguranza" value="{{ paciente.Aseguranza if paciente else '' }}" placeholder="Ej: Activa" required>
+            </div>
+
+            <div class="form-group">
+                <label>Telefono:</label>
+                <input type="text" name="Telefono" value="{{ paciente.Telefono if paciente else '' }}" placeholder="Ej: 555-1234" required>
+            </div>
+
+            <div class="form-group">
+                <label>Contacto de emergencia:</label>
+                <input type="text" name="Contacto_de_emergencia" value="{{ paciente.Contacto_de_emergencia if paciente else '' }}" placeholder="Ej: 555-4321" required>
+            </div>
+
+            <div class="form-group">
+                <label>Domicilio:</label>
+                <input type="text" name="Domicilio" value="{{ paciente.Domicilio if paciente else '' }}" placeholder="Ej: Calle Azul, #2376" required>
+            </div>
+
+            <div class="form-group">
+                <label>Correo electronico:</label>
+                <input type="email" name="Correo_electronico" value="{{ paciente.Correo_electronico if paciente else '' }}" placeholder="Ej: carlos@gmail.com" required>
+            </div>
+
+            <div class="form-group">
+                <label>Alergias:</label>
+                <input type="text" name="Alergias" value="{{ paciente.Alergias if paciente else '' }}" placeholder="Ej: Frutos secos" required>
+            </div>
+
+            <div class="form-group">
+                <label>RFC:</label>
+                <input type="text" name="RFC" value="{{ paciente.RFC if paciente else '' }}" placeholder="Ej: MOCK19850322" required>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                {% if paciente %}Guardar Cambios{% else %}Dar de alta al Paciente{% endif %}
+            </button>
+        </form>
+    </div>
+        
+    <div class="buttons-container">
+        <a href="/" class="btn-back">Volver al Inicio</a>
+        <a href="/pacientes" class="btn-view-table">📋 Visualizar Tabla</a>
+    </div>
+</main>
+
+<footer>
+    <p>Perez Hinostroza Cynthia Jacqueline - Programación</p>
+    <p>24308051280615 - 4-I</p>
+</footer>
+
+</body>
+<style>
+    * {box-sizing: border-box;}
+    body {background-color: #133257;margin: 0;padding: 0;display: flex;flex-direction: column;align-items: center;min-height: 100vh;}
+    header {background-color: #79A8E2;width: 100%;padding: 20px 0;text-align: center;box-shadow: #79A8E2;}
+    h1 {color: #133257;margin: 0;font-size: 40px;}
+    main {display: flex;flex-direction: column;align-items: center;width: 100%;padding: 40px 20px;flex: 1;}
+    
+    /* ESTILOS DE LA NUEVA BARRA DE BÚSQUEDA */
+    .search-container {max-width: 500px; width: 100%; margin-bottom: 20px;}
+    .search-form {display: flex; gap: 10px;}
+    .search-form input {flex: 1; padding: 12px; border-radius: 6px; border: 1px solid #79A8E2; background-color: #C4D9F2; color: #133257; font-size: 14px;}
+    .btn-search {background-color: #79A8E2; color: #133257; border: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background-color 0.3s;}
+    .btn-search:hover {background-color: #EAF1FA;}
+
+    .form-container {max-width: 500px;width: 100%;background: #EAF1FA;padding: 35px;border-radius: 12px;box-shadow: 0 8px 24px rgba(245, 228, 242, 0.7); border-top: 6px solid #1D4C86;}
+    .form-group {margin-bottom: 22px;}
+    label {display: block;margin-bottom: 8px;font-weight: 600;color: #133257;font-size: 14px;}
+    input[type="text"], input[type="number"], input[type="date"], input[type="email"] {width: 100%;padding: 12px;border: 1px solid #e0d0dd;border-radius: 6px; font-size: 14px;background-color: #C4D9F2;color: #133257;transition: all 0.3s ease;}
+    input:focus {outline: none;border-color: #EAF1FA;background-color: #79A8E2;box-shadow: 0 0 5px rgba(202, 158, 195, 0.4);}
+    .btn-submit {background-color: #1D4C86;color: #C4D9F2;border: none;padding: 14px 15px;width: 100%;border-radius: 6px;font-size: 16px; cursor: pointer;transition: background-color 0.3s ease;margin-top: 10px;}
+    .btn-submit:hover {background-color: #b382ab;}
+    
+    .buttons-container { display: flex; gap: 30px; align-items: center; margin-top: 25px; }
+    .btn-back {color:#EAF1FA;text-decoration:none;font-size:14px;font-weight:500;transition:color 0.3s ease;}
+    .btn-back:hover {color: #79A8E2;}
+    
+    .btn-view-table { background-color: #79A8E2; color: #133257; text-decoration: none; padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: bold; transition: all 0.3s ease; }
+    .btn-view-table:hover { background-color: #EAF1FA; box-shadow: 0 0 8px rgba(121, 168, 226, 0.6); }
+    
+    footer {width: 100%;background-color: #1D4C86;padding: 15px 0;text-align: center;font-size: 13px;color: #EAF1FA;}
+    footer p {margin: 4px 0;}
+</style>
+</html>

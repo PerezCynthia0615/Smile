@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Empleados</title>
+    <style>
+        table {border-collapse: collapse; width: 100%; margin-top: 20px;}
+        th, td {border: 1px solid #ccc; padding: 10px; text-align: left;}
+        th {background-color: #C2DFF5;}
+        .btn-delete { color: #d9534f; text-decoration: none; font-weight: bold; margin-left: 10px; }
+        .btn-edit { color: #0275d8; text-decoration: none; font-weight: bold; }
+        .btn-add { display: inline-block; padding: 10px 15px; background-color: #5cb85c; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        .btn-home { display: inline-block; margin-top: 20px; color: #133257; font-weight: bold; text-decoration: none; }
+        .btn-home:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h2>Control de Empleados</h2>
+
+    <a href="/empleados/nuevo" class="btn-add">➕ Dar de alta nuevo empleado</a>
+    <br><br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Puesto</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Fecha de Contratación</th>
+                <th>RFC</th>
+                <th>Teléfono</th>
+                <th>Correo Electrónico</th>
+                <th>NSS</th>
+                <th>Certificaciones</th>
+                <th>Horarios</th>
+                <th>CURP</th>
+                <th>Cédula Profesional</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for empleado in empleados %}
+            <tr>
+                <td>{{ empleado.Nombre }}</td>
+                <td>{{ empleado.Apellidos }}</td>
+                <td>{{ empleado.Puesto }}</td>
+                <td>{{ empleado['Fecha de Nacimiento'] }}</td>
+                <td>{{ empleado['Fecha de Contratación'] }}</td>
+                <td>{{ empleado.RFC }}</td>
+                <td>{{ empleado['Teléfono'] }}</td>
+                <td>{{ empleado['Correo electrónico'] }}</td>
+                <td>{{ empleado['Numero de seguro social'] }}</td>
+                <td>{{ empleado.Certificaciones }}</td>
+                <td>{{ empleado.Horarios }}</td>
+                <td>{{ empleado.CURP }}</td>
+                <td>{{ empleado['Cédula Profesional'] }}</td>
+                <td>
+                    <a href="/empleados/editar/{{ empleado.id_empleado }}" class="btn-edit">Editar</a>
+                    <a href="/empleados/eliminar/{{ empleado.id_empleado }}" class="btn-delete" onclick="return confirm('¿Seguro que deseas eliminar este empleado?')">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <a href="/" class="btn-home">Volver al Inicio</a>
+</body>
+</html>

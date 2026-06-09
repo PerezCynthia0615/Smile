@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Citas</title>
+    <style>
+        table {border-collapse: collapse; width: 100%; margin-top: 20px;}
+        th, td {border: 1px solid #ccc; padding: 10px; text-align: left;}
+        th {background-color: #C2DFF5;}
+        .btn-delete { color: #d9534f; text-decoration: none; font-weight: bold; margin-left: 10px; }
+        .btn-edit { color: #0275d8; text-decoration: none; font-weight: bold; }
+        .btn-add { display: inline-block; padding: 10px 15px; background-color: #5cb85c; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        .btn-home { display: inline-block; margin-top: 20px; color: #133257; font-weight: bold; text-decoration: none; }
+        .btn-home:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h2>Control de Citas Agendadas</h2>
+
+    <a href="/citas/nueva" class="btn-add">➕ Agendar nueva cita</a>
+    <br><br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Paciente</th>
+                <th>Tratamiento</th>
+                <th>Fecha y Hora</th>
+                <th>Estado</th>
+                <th>Médico</th>
+                <th>Duración</th>
+                <th>Notas</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cita in citas %}
+            <tr>
+                <td>{{ cita.Paciente }}</td>
+                <td>{{ cita.Tratamiento }}</td>
+                <td>{{ cita['Fecha y Hora'] }}</td>
+                <td>{{ cita.Estado }}</td>
+                <td>{{ cita.Medico }}</td>
+                <td>{{ cita['Duracion(min)'] }} min</td>
+                <td>{{ cita.Notas }}</td>
+                <td>
+                    <a href="/citas/editar/{{ cita.id_cita }}" class="btn-edit">Editar</a>
+                    <a href="/citas/eliminar/{{ cita.id_cita }}" class="btn-delete" onclick="return confirm('¿Seguro que deseas eliminar esta cita?')">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <a href="/" class="btn-home">Volver al Inicio</a>
+</body>
+</html>

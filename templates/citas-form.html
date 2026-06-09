@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ingreso de Citas</title>
+</head>
+<body>
+<header>
+    <h1>Ingreso de Citas - Consultorio SMILE</h1>
+    <img src="{{ url_for('static', filename='img.png') }}" width="250" alt="Logotipo SMILE">
+    <p> Rellene los datos solicitados para darle de alta en el sistema. ¡Gracias por confiar en SMILE! </p>
+</header>
+<main>
+    <!-- BARRA DE BÚSQUEDA INCORPORADA -->
+    <div class="search-container">
+        <input type="text" id="inputBuscar" placeholder="Buscar cita por Paciente o Médico...">
+        <button type="button" class="btn-search" onclick="buscarCita()">🔍 Buscar</button>
+    </div>
+
+    <div class="form-container">
+        <h2>{% if cita %}Modificar Datos de la Cita{% else %}Ingreso de Citas{% endif %}</h2>
+        
+        <form action="{% if cita %}/citas/actualizar{% else %}/citas/guardar{% endif %}" method="POST">
+            
+            {% if cita %}
+            <input type="hidden" name="id_cita" value="{{ cita.id_cita }}">
+            {% endif %}
+
+            <div class="form-group">
+                <label>Paciente:</label>
+                <input type="text" name="Paciente" value="{{ cita.Paciente if cita else '' }}" placeholder="Ej: Carlos Iker Martínez" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Tratamiento:</label>
+                <input type="text" name="Tratamiento" value="{{ cita.Tratamiento if cita else '' }}" placeholder="Ej: Relleno de caries" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Fecha y Hora:</label>
+                <input type="datetime-local" name="Fecha_y_Hora" value="{{ cita['Fecha y Hora'] if cita else '' }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Estado:</label>
+                <select name="Estado" id="estado" required>
+                    <option value="Confirmada" {% if cita and cita.Estado == 'Confirmada' %}selected{% endif %}>Confirmada</option>
+                    <option value="Completada" {% if cita and cita.Estado == 'Completada' %}selected{% endif %}>Completada</option>
+                    <option value="Cancelada" {% if cita and cita.Estado == 'Cancelada' %}selected{% endif %}>Cancelada</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Médico:</label>
+                <input type="text" name="Medico" value="{{ cita.Medico if cita else '' }}" placeholder="Ej: Dr. Hernandez Espino" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Duración (min):</label>
+                <input type="number" name="Duracion" value="{{ cita.Duracion if cita else '' }}" placeholder="Ej: 30" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Notas:</label>
+                <input type="text" name="Notas" value="{{ cita.Notas if cita else '' }}" placeholder="Ej: Tratamiento de caries" required>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                {% if cita %}Guardar Cambios{% else %}Ingresar nueva cita{% endif %}
+            </button>
+        </form>
+    </div>
+    
+    <div class="buttons-container">
+        <a href="/" class="btn-back">Volver al Inicio</a>
+        <a href="/citas" class="btn-view-table">📋 Visualizar Tabla</a>
+    </div>
+</main>
+
+<footer>
+    <p>Perez Hinostroza Cynthia Jacqueline - Programación</p>
+    <p>24308051280615 - 4-I</p>
+</footer>
+
+<script>
+function buscarCita() {
+    const query = document.getElementById('inputBuscar').value.trim();
+    if (!query) return alert('Por favor, ingrese un término de búsqueda.');
+    window.location.href = `/citas?buscar=${encodeURIComponent(query)}`;
+}
+</script>
+</body>
+<style>
+    * {box-sizing: border-box;}
+    body {background-color: #133257;margin: 0;padding: 0;display: flex;flex-direction: column;align-items: center;min-height: 100vh;font-family: Arial, sans-serif;}
+    header {background-color: #79A8E2;width: 100%;padding: 20px 0;text-align: center;}
+    h1 {color: #133257;margin: 0;font-size: 40px;}
+    main {display: flex;flex-direction: column;align-items: center;width: 100%;padding: 40px 20px;flex: 1;}
+    
+    /* Estilos de la barra de búsqueda */
+    .search-container { max-width: 500px; width: 100%; display: flex; gap: 10px; margin-bottom: 20px; }
+    .search-container input { flex: 1; padding: 12px; border: 1px solid #79A8E2; border-radius: 6px; background-color: #C4D9F2; color: #133257; font-size: 14px; }
+    .btn-search { background-color: #79A8E2; color: #133257; border: none; padding: 0 20px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background-color 0.3s; }
+    .btn-search:hover { background-color: #EAF1FA; }
+
+    .form-container {max-width: 500px;width: 100%;background: #EAF1FA;padding: 35px;border-radius: 12px;box-shadow: 0 8px 24px rgba(0,0,0,0.3); border-top: 6px solid #1D4C86;}
+    .form-group {margin-bottom: 22px;}
+    label {display: block;margin-bottom: 8px;font-weight: 600;color: #133257;font-size: 14px;}
+    input[type="text"], input[type="number"], input[type="date"], input[type="datetime-local"], select {width: 100%;padding: 12px;border: 1px solid #79A8E2;border-radius: 6px; font-size: 14px;background-color: #C4D9F2;color: #133257;transition: all 0.3s ease;}
+    input:focus, select:focus {outline: none;border-color: #1D4C86;background-color: #EAF1FA;}
+    .btn-submit {background-color: #1D4C86;color: #C4D9F2;border: none;padding: 14px 15px;width: 100%;border-radius: 6px;font-size: 16px; cursor: pointer;margin-top: 10px;transition: all 0.3s ease;}
+    .btn-submit:hover {background-color: #79A8E2; color: #133257;}
+    
+    .buttons-container { display: flex; gap: 30px; align-items: center; margin-top: 25px; }
+    .btn-back {color:#EAF1FA;text-decoration:none;font-size:14px;font-weight:500;}
+    .btn-back:hover {color: #79A8E2;}
+    
+    .btn-view-table { background-color: #79A8E2; color: #133257; text-decoration: none; padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: bold; transition: all 0.3s ease; }
+    .btn-view-table:hover { background-color: #EAF1FA; box-shadow: 0 0 8px rgba(121, 168, 226, 0.6); }
+
+    footer {width: 100%;background-color: #1D4C86;padding: 15px 0;text-align: center;font-size: 13px;color: #EAF1FA;}
+    footer p {margin: 4px 0;}
+</style>
+</html>

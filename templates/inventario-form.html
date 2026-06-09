@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actualización de Inventario</title>
+</head>
+<body>
+<header>
+    <h1>Actualización de Inventario - Consultorio SMILE</h1>
+    <img src="{{ url_for('static', filename='img.png') }}" width="250" alt="Logotipo SMILE">
+    <p> Rellene los datos solicitados para darle de alta en el sistema. ¡Gracias por confiar en SMILE! </p>
+</header>
+<main>
+    <!-- BARRA DE BÚSQUEDA INCORPORADA -->
+    <div class="search-container">
+        <input type="text" id="inputBuscar" placeholder="Buscar material por Nombre o Proveedor...">
+        <button type="button" class="btn-search" onclick="buscarInventario()">🔍 Buscar</button>
+    </div>
+
+    <div class="form-container">
+        <h2>{% if material %}Modificar Producto/Material{% else %}Ingresar material/producto{% endif %}</h2>
+        
+        <form action="{% if material %}/inventario/actualizar{% else %}/inventario/guardar{% endif %}" method="POST">
+            
+            {% if material %}
+            <input type="hidden" name="id_inventario" value="{{ material.id_inventario }}">
+            {% endif %}
+
+            <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" name="Nombre" value="{{ material.Nombre if material else '' }}" placeholder="Ej: Resina fluida" required>
+            </div>
+            <div class="form-group">
+                <label>Cantidad:</label>
+                <input type="number" name="Cantidad" value="{{ material.Cantidad if material else '' }}" placeholder="Ej: 10" required>
+            </div>
+            <div class="form-group">
+                <label>Unidad de Medida:</label>
+                <input type="text" name="Unidad_de_Medida" value="{{ material['Unidad de Medida'] if material else '' }}" placeholder="Ej: Paquetes" required>
+            </div>
+            <div class="form-group">
+                <label>Proveedor:</label>
+                <input type="text" name="Proveedor" value="{{ material.Proveedor if material else '' }}" placeholder="Ej: Proveedor A" required>
+            </div>
+            <div class="form-group">
+                <label>Fecha de caducidad:</label>
+                <input type="date" name="Fecha_de_caducidad" value="{{ material['Fecha de caducidad'] if material else '' }}" required>
+            </div>
+            <div class="form-group">
+                <label>Costo unitario:</label>
+                <input type="number" step="any" name="Costo_unitario" value="{{ material['Costo unitario'] if material else '' }}" placeholder="Ej: 200" required>
+            </div>
+            <div class="form-group">
+                <label>Ubicación en almacén:</label>
+                <input type="text" name="Ubicacion_en_almacen" value="{{ material['Ubicación en almacén'] if material else '' }}" placeholder="Ej: Estante 1, Sección B" required>
+            </div>
+            <div class="form-group">
+                <label>Notas adicionales:</label>
+                <input type="text" name="Notas_adicionales" value="{{ material['Notas Adicionales'] if material else '' }}" placeholder="Ej: Desechables" required>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                {% if material %}Guardar Cambios{% else %}Ingresar material/producto{% endif %}
+            </button>
+        </form>
+    </div>
+    
+    <div class="buttons-container">
+        <a href="/" class="btn-back">Volver al Inicio</a>
+        <a href="/inventario" class="btn-view-table">📋 Visualizar Inventario</a>
+    </div>
+</main>
+<footer>
+    <p>Perez Hinostroza Cynthia Jacqueline - Programación</p>
+    <p>24308051280615 - 4-I</p>
+</footer>
+
+<script>
+function buscarInventario() {
+    const query = document.getElementById('inputBuscar').value.trim();
+    if (!query) return alert('Por favor, ingrese un término de búsqueda.');
+    window.location.href = `/inventario?buscar=${encodeURIComponent(query)}`;
+}
+</script>
+</body>
+<style>
+    * {box-sizing: border-box;}
+    body {background-color: #133257;margin: 0;padding: 0;display: flex;flex-direction: column;align-items: center;min-height: 100vh;font-family: Arial, sans-serif;}
+    header {background-color: #79A8E2;width: 100%;padding: 20px 0;text-align: center;}
+    h1 {color: #133257;margin: 0;font-size: 40px;}
+    main {display: flex;flex-direction: column;align-items: center;width: 100%;padding: 40px 20px;flex: 1;}
+    
+    /* Estilos de la barra de búsqueda */
+    .search-container { max-width: 500px; width: 100%; display: flex; gap: 10px; margin-bottom: 20px; }
+    .search-container input { flex: 1; padding: 12px; border: 1px solid #79A8E2; border-radius: 6px; background-color: #C4D9F2; color: #133257; font-size: 14px; }
+    .btn-search { background-color: #79A8E2; color: #133257; border: none; padding: 0 20px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background-color 0.3s; }
+    .btn-search:hover { background-color: #EAF1FA; }
+
+    .form-container {max-width: 500px;width: 100%;background: #EAF1FA;padding: 35px;border-radius: 12px;box-shadow: 0 8px 24px rgba(0,0,0,0.3); border-top: 6px solid #1D4C86;}
+    .form-group {margin-bottom: 22px;}
+    label {display: block;margin-bottom: 8px;font-weight: 600;color: #133257;font-size: 14px;}
+    input[type="text"], input[type="number"], input[type="date"] {width: 100%;padding: 12px;border: 1px solid #79A8E2;border-radius: 6px; font-size: 14px;background-color: #C4D9F2;color: #133257;transition: all 0.3s ease;}
+    input:focus {outline: none;border-color: #1D4C86;background-color: #EAF1FA;}
+    .btn-submit {background-color: #1D4C86;color: #C4D9F2;border: none;padding: 14px 15px;width: 100%;border-radius: 6px;font-size: 16px; cursor: pointer;margin-top: 10px;transition: all 0.3s ease;}
+    .btn-submit:hover {background-color: #79A8E2; color: #133257;}
+    
+    .buttons-container { display: flex; gap: 30px; align-items: center; margin-top: 25px; }
+    .btn-back {text-decoration:none;font-size:14px;font-weight:500;color:#EAF1FA;}
+    .btn-back:hover {color: #79A8E2;}
+    
+    .btn-view-table { background-color: #79A8E2; color: #133257; text-decoration: none; padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: bold; transition: all 0.3s ease; }
+    .btn-view-table:hover { background-color: #EAF1FA; }
+    
+    footer {width: 100%;background-color: #1D4C86;padding: 15px 0;text-align: center;font-size: 13px;color: #EAF1FA;}
+    footer p {margin: 4px 0;}
+</style>
+</html>

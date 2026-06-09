@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ingreso de Empleados</title>
+</head>
+<body>
+<header>
+    <h1>Ingreso de Empleados - Consultorio SMILE</h1>
+    <img src="{{ url_for('static', filename='img.png') }}" width="250" alt="Logotipo SMILE">
+    <p> Rellene los datos solicitados para darle de alta en el sistema. ¡Gracias por confiar en SMILE! </p>
+</header>
+<main>
+    <!-- BARRA DE BÚSQUEDA INCORPORADA -->
+    <div class="search-container">
+        <input type="text" id="inputBuscar" placeholder="Buscar empleado por ID o Nombre...">
+        <button type="button" class="btn-search" onclick="buscarEmpleado()">🔍 Buscar</button>
+    </div>
+
+    <div class="form-container">
+        <h2>{% if empleado %}Modificar Datos del Empleado{% else %}Ingreso de Empleados{% endif %}</h2>
+        
+        <form action="{% if empleado %}/empleados/actualizar{% else %}/empleados/guardar{% endif %}" method="POST">
+            
+            {% if empleado %}
+            <input type="hidden" name="id_empleado" value="{{ empleado.id_empleado }}">
+            {% endif %}
+
+            <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" name="Nombre" value="{{ empleado.Nombre if empleado else '' }}" placeholder="Ej: Alan" required>
+            </div>
+            <div class="form-group">
+                <label>Apellidos:</label>
+                <input type="text" name="Apellidos" value="{{ empleado.Apellidos if empleado else '' }}" placeholder="Ej: Perez Lopez" required>
+            </div>
+            <div class="form-group">
+                <label>Puesto:</label>
+                <input type="text" name="Puesto" value="{{ empleado.Puesto if empleado else '' }}" placeholder="Ej: Dentista" required>
+            </div>
+            <div class="form-group">
+                <label>Fecha de Nacimiento:</label>
+                <input type="date" name="Fecha_de_Nacimiento" value="{{ empleado['Fecha de Nacimiento'] if empleado else '' }}" required>
+            </div>
+            <div class="form-group">
+                <label>Fecha de Contratación:</label>
+                <input type="date" name="Fecha_de_Contratación" value="{{ empleado['Fecha de Contratación'] if empleado else '' }}" required>
+            </div>
+            <div class="form-group">
+                <label>RFC:</label>
+                <input type="text" name="RFC" value="{{ empleado.RFC if empleado else '' }}" placeholder="Ej: SGAR900620A" required>
+            </div>
+            <div class="form-group">
+                <label>Teléfono:</label>
+                <input type="text" name="Telefono" value="{{ empleado['Teléfono'] if empleado else '' }}" placeholder="Ej: 5551234" required>
+            </div>
+            <div class="form-group">
+                <label>Correo electrónico:</label>
+                <input type="email" name="Correo_electronico" value="{{ empleado['Correo electrónico'] if empleado else '' }}" placeholder="Ej: carlos@gmail.com" required>
+            </div>
+            <div class="form-group">
+                <label>Número de seguro social:</label>
+                <input type="text" name="Numero_de_seguro_social" value="{{ empleado['Numero de seguro social'] if empleado else '' }}" placeholder="Ej: 967-67-4321" required>
+            </div>
+            <div class="form-group">
+                <label>Certificaciones:</label>
+                <input type="text" name="Certificaciones" value="{{ empleado.Certificaciones if empleado else '' }}" placeholder="Ej: Certificación en higiene" required>
+            </div>
+            <div class="form-group">
+                <label>Horarios:</label>
+                <input type="text" name="Horarios" value="{{ empleado.Horarios if empleado else '' }}" placeholder="Ej: Martes a sábado 10-5" required>
+            </div>
+            <div class="form-group">
+                <label>CURP:</label>
+                <input type="text" name="CURP" value="{{ empleado.CURP if empleado else '' }}" placeholder="Ej: SGAR900620FA0" required>
+            </div>
+            <div class="form-group">
+                <label>Cédula Profesional:</label>
+                <input type="text" name="Cédula_Profesional" value="{{ empleado['Cédula Profesional'] if empleado else '' }}" placeholder="Ej: 7890123" required>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                {% if empleado %}Guardar Cambios{% else %}Ingresar empleado{% endif %}
+            </button>
+        </form>
+    </div>
+
+    <div class="buttons-container">
+        <a href="/" class="btn-back">Volver al Inicio</a>
+        <a href="/empleados" class="btn-view-table">📋 Visualizar Tabla</a>
+    </div>
+</main>
+
+<footer>
+    <p>Perez Hinostroza Cynthia Jacqueline - Programación</p>
+    <p>24308051280615 - 4-I</p>
+</footer>
+
+<script>
+function buscarEmpleado() {
+    const query = document.getElementById('inputBuscar').value.trim();
+    if (!query) return alert('Por favor, ingrese un término de búsqueda.');
+    // Redirige a la tabla principal aplicando el filtro de búsqueda nativo
+    window.location.href = `/empleados?buscar=${encodeURIComponent(query)}`;
+}
+</script>
+</body>
+<style>
+    * {box-sizing: border-box;}
+    body {background-color: #133257;margin: 0;padding: 0;display: flex;flex-direction: column;align-items: center;min-height: 100vh;font-family: Arial, sans-serif;}
+    header {background-color: #79A8E2;width: 100%;padding: 20px 0;text-align: center;}
+    h1 {color: #133257;margin: 0;font-size: 40px;}
+    main {display: flex;flex-direction: column;align-items: center;width: 100%;padding: 40px 20px;flex: 1;}
+    
+    /* Estilos de la barra de búsqueda */
+    .search-container { max-width: 500px; width: 100%; display: flex; gap: 10px; margin-bottom: 20px; }
+    .search-container input { flex: 1; padding: 12px; border: 1px solid #79A8E2; border-radius: 6px; background-color: #C4D9F2; color: #133257; font-size: 14px; }
+    .btn-search { background-color: #79A8E2; color: #133257; border: none; padding: 0 20px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background-color 0.3s; }
+    .btn-search:hover { background-color: #EAF1FA; }
+
+    .form-container {max-width: 500px;width: 100%;background: #EAF1FA;padding: 35px;border-radius: 12px;box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); border-top: 6px solid #1D4C86;}
+    .form-group {margin-bottom: 22px;}
+    label {display: block;margin-bottom: 8px;font-weight: 600;color: #133257;font-size: 14px;}
+    input[type="text"], input[type="number"], input[type="date"], input[type="email"] {width: 100%;padding: 12px;border: 1px solid #79A8E2;border-radius: 6px; font-size: 14px;background-color: #C4D9F2;color: #133257;transition: all 0.3s ease;}
+    input:focus {outline: none;border-color: #1D4C86;background-color: #EAF1FA;}
+    .btn-submit {background-color: #1D4C86;color: #C4D9F2;border: none;padding: 14px 15px;width: 100%;border-radius: 6px;font-size: 16px; cursor: pointer;transition: background-color 0.3s ease;margin-top: 10px;}
+    .btn-submit:hover {background-color: #79A8E2; color: #133257;}
+    
+    .buttons-container { display: flex; gap: 30px; align-items: center; margin-top: 25px; }
+    .btn-back {color:#EAF1FA;text-decoration:none;font-size:14px;font-weight:500;transition:color 0.3s ease;}
+    .btn-back:hover {color: #79A8E2;}
+    
+    .btn-view-table { background-color: #79A8E2; color: #133257; text-decoration: none; padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: bold; transition: all 0.3s ease; }
+    .btn-view-table:hover { background-color: #EAF1FA; box-shadow: 0 0 8px rgba(121, 168, 226, 0.6); }
+    
+    footer {width: 100%;background-color: #1D4C86;padding: 15px 0;text-align: center;font-size: 13px;color: #EAF1FA;}
+    footer p {margin: 4px 0;}
+</style>
+</html>

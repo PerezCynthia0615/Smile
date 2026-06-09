@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>SMILE/Dentista</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: sans-serif;
+      background-color: #fafafa;
+      color: #333;
+    }
+    header, footer { background-color: #7CBEDF; padding: 20px; text-align: center;}
+    nav a { display: inline-block; padding: 10px 15px; color: #333; text-decoration: none; font-weight: bold;}
+    nav a:hover { color: #fff; }
+  </style>
+</head>
+<body>
+    <header>
+      <img src="{{ url_for('static', filename='img.png') }}" width="250" alt="Logotipo SMILE">
+        <h1 style="font-size: 35px;">SMILE <br> Consultorio dentista para toda la familia</h1>
+    </header>
+    
+    <nav style="background-color: #BDE3FA; text-align: center;">
+        <a href="{{ url_for('pacientes.formulario') }}">Pacientes</a>
+        <a href="{{ url_for('empleados.formulario') }}">Empleados</a>
+        <a href="{{ url_for('tratamientos.formulario') }}">Tratamientos</a>
+        <a href="{{ url_for('inventario.formulario') }}">Inventario</a>
+        <a href="{{ url_for('citas.formulario') }}">Citas</a>
+    </nav>
+    
+    <main style="padding: 30px 20px;">
+        <h2>Bienvenido a Smile</h2>
+        <p style="margin-bottom: 30px;">La precisión es el pilar de la odontología moderna. Este sitio web sirve como interfaz directa a nuestra base de datos no relacionales, donde 
+gestamos de manera eficiente la informacion de nuestros pacientes, de nuestros empleados, de nuestros tratamientos, de nuestro inventario de materiales y
+ de nuestras citas, para tener una mejor nocion de nuestro conusltorio y sea mas facil encontrar informacion importante de forma rapida. En nuestra barra de navegacion encontraras nuestros documentos de manera organizada.</p>
+
+        </main>
+    
+    <footer>
+        <p>Nombre: Perez Hinostroza Cynthia Jacqueline<br>Grado y grupo: 4-i | Especialidad: Programación<br>No. Control: 24308051280615</p>
+    </footer>
+</body>
+</html>
